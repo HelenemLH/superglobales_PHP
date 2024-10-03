@@ -1,21 +1,22 @@
 <?php
-
+// démarre session 
 session_start();
 
-//via session
-if (isset($_SESSION['first_name'])) {
-    $firstName = htmlspecialchars($_SESSION['first_name']);
-}
-// via GET
-elseif (isset($_GET['first_name']) && !empty($_GET['first_name'])) {
+// vérif via GET 
+if (isset($_GET['first_name']) && !empty($_GET['first_name'])) {
     $firstName = htmlspecialchars($_GET['first_name']);
+    $_SESSION['first_name'] = $firstName;  // Mettre à jour la session avec ce prénom
 }
-// via POST
+// sinon verif via POST
 elseif (isset($_POST['first_name']) && !empty($_POST['first_name'])) {
     $firstName = htmlspecialchars($_POST['first_name']);
-    $_SESSION['first_name'] = $firstName;
+    $_SESSION['first_name'] = $firstName;  // Sauvegarder dans la session
 }
-// sinon - afficher "anonyme"
+// sinon utiliser session
+elseif (isset($_SESSION['first_name'])) {
+    $firstName = $_SESSION['first_name'];
+}
+// sinon afficher anonyme
 else {
     $firstName = 'anonyme';
 }
@@ -23,8 +24,11 @@ else {
 echo "Bonjour " . $firstName;
 ?>
 
-<!--  HTML -->
+<!-- formulaire HTML -->
 <form action="exercice.php" method="post">
     <p>Votre nom : <input type="text" name="first_name" /></p>
     <p><input type="submit" value="OK"></p>
 </form>
+
+<!-- reset button -->
+<p><a href="exercice.php?reset_session=true">Reset</a></p>
