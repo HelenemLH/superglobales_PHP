@@ -2,6 +2,14 @@
 // démarre session 
 session_start();
 
+// réinitialiser session 
+if (isset($_GET['reset_session'])) {
+    session_unset(); // supprime les variables de session
+    session_destroy(); // kill session
+    header("Location: exercice.php"); // redirection 
+    exit();
+}
+
 // vérif via GET 
 if (isset($_GET['first_name']) && !empty($_GET['first_name'])) {
     $firstName = htmlspecialchars($_GET['first_name']);
